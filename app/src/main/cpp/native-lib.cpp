@@ -18,8 +18,9 @@ Java_com_kpa_image_MainActivity_stringFromJNI(
 }
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_com_kpa_image_MainActivity_scaleBitmap(JNIEnv *env, jobject thiz, jobject inputBitmap,
-                                            jfloat scale) {
+Java_com_kpa_image_MainActivity_scaleBitmapByNearestNeighbor(JNIEnv *env, jobject thiz,
+                                                             jobject inputBitmap,
+                                                             jfloat scale) {
     // bitmap 转换为openCV的Mat
     AndroidBitmapInfo bitmapInfo;
     Mat inputMat;
@@ -96,4 +97,16 @@ Java_com_kpa_image_MainActivity_scaleBitmap(JNIEnv *env, jobject thiz, jobject i
     LOGD("执行完成");
     // 返回Java中的Bitmap对象
     return outputBitmap;
+}
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_com_kpa_image_MainActivity_scaleBitmapByBilinear(JNIEnv *env, jobject thiz,
+                                                      jobject input_bitmap, jfloat scale) {
+    return input_bitmap;
+}
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_com_kpa_image_MainActivity_scaleBitmapByBicubic(JNIEnv *env, jobject thiz,
+                                                     jobject input_bitmap, jfloat scale) {
+    return input_bitmap;
 }
