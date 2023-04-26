@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var currentType = ScalingAlgorithmType.NEAREST_NEIGHBOR
-
+    private val TAG = "MainActivity-Scale"
     private var lastScale = 0.0F
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,14 @@ class MainActivity : AppCompatActivity() {
 
         var bitmap = BitmapFactory.decodeResource(resources, R.drawable.test)
         val df = DecimalFormat("#.#")
-
+        var value = (binding.seekbar.progress / 100.0) ?: 0.1
+        var scale = df.format(value).toFloat()
+        if (scale <= 0.0f) {
+            scale = 0.1f
+        }
+        if (lastScale != scale) {
+            lastScale = scale
+        }
         binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 var value = (progress / 100.0) ?: 0.1
@@ -69,6 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateImg(bitmap: Bitmap, scale: Float, type: ScalingAlgorithmType) {
+        Log.d(TAG, "scale = $scale")
         MainScope().launch(Dispatchers.IO) {
             var scaleBitmap = when (type) {
                 ScalingAlgorithmType.NEAREST_NEIGHBOR -> {
